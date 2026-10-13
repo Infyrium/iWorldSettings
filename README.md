@@ -1,1 +1,1 @@
-# mc-iworldsettings
+# iWorldSettings
