@@ -55,11 +55,11 @@ public class iWorldSettingsMain extends JavaPlugin {
     public void applyWorldSettings(World world) {
         WorldSettings worldSettings = getSettings(world);
 
-        disableGameRule(world, GameRule.DO_DAYLIGHT_CYCLE, worldSettings.fixedTime);
+        disableGameRule(world, GameRule.DO_DAYLIGHT_CYCLE, "dodaylightcycle", worldSettings.fixedTime);
         if (worldSettings.fixedTime) {
             world.setTime(worldSettings.fixedTimeMeaning);
         }
-        disableGameRule(world, GameRule.MOB_GRIEFING, worldSettings.noMobGriefing);
+        disableGameRule(world, GameRule.MOB_GRIEFING, "mobgriefing", worldSettings.noMobGriefing);
         if (worldSettings.noMobSpawn) {
             for (Entity entity : world.getEntities()) {
                 if (!(entity instanceof Player)) {
@@ -72,9 +72,10 @@ public class iWorldSettingsMain extends JavaPlugin {
     /**
      * Sets the gamerule to false and remembers its previous value in the world data.
      * When the setting is turned off, restores the previous value.
+     * The data key is fixed: since 1.21.11 rule names are "minecraft:..." and change between versions.
      */
-    private void disableGameRule(World world, GameRule<Boolean> rule, boolean disable) {
-        NamespacedKey key = new NamespacedKey(this, rule.getName().toLowerCase());
+    private void disableGameRule(World world, GameRule<Boolean> rule, String dataKey, boolean disable) {
+        NamespacedKey key = new NamespacedKey(this, dataKey);
         PersistentDataContainer data = world.getPersistentDataContainer();
 
         if (disable) {
